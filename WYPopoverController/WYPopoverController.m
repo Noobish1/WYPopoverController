@@ -3151,6 +3151,15 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    @try {
+    	if ([viewController respondsToSelector:@selector(preferredContentSize)]) {
+            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(preferredContentSize))];
+        } else {
+            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeForViewInPopover))];
+        }
+    }
+    @catch (NSException * __unused exception) {}
+    
     [backgroundView removeFromSuperview];
     [backgroundView setDelegate:nil];
     
